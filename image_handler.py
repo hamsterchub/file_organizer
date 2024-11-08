@@ -39,7 +39,7 @@ def get_image_exif_output(img_exif_data):
     date_original = img_exif_data.get(36867)   # DateTimeOriginal tag
     date_modified = img_exif_data.get(36866)   # DateModified tag
 
-    # Setting up local variables to use for parsing choise exif metadata fields. Setting defalt date time to year far, far away for comparison
+    # Setting up local variables to use for parsing exif metadata fields. Setting default date time to year far, far away for comparison
     bool_is_date_orig_or_mod = False    # Variable to be turned if either date_original or date_modified are valid
     date_orig_extract = datetime(9999, 1, 1, 1, 1, 1)
     date_mod_extract = datetime(9999, 1, 1, 1, 1, 1)
