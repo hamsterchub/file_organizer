@@ -8,4 +8,4 @@ The program flows like this:
 2. The program will begin to traverse the input_dir
 3. The program is smart enough to traverse nested directories. Recursive calls to run_main will be used to traverse nested directories
 4. The program will sort your data according to the handler functions. The handler functions define the names of the nested output directories to create
-5. More complex hanlder modules exist for file types with lots of metadata like images. Most handler functions are simple method calls with str return
+5. More complex handler modules exist for file types with lots of metadata, like images. Most handler functions are simple method calls with str return at the moment
