@@ -1,7 +1,7 @@
-import os
-
 # Import project files
 from image_handler import get_image_output_path
+from util_functions import os_is_path_a_dir
+from util_functions import os_get_file_ext
 
 
 # Inputs:
@@ -44,7 +44,7 @@ def get_pdf_output_path(pdf_path):
 #       str - Full path to a file
 #           NOTE - Currently unused...
 # Outputs:
-#       Desired subdirectory in the program output directory (defined in __main__) to drop files with a powerpoint type file extension
+#       Desired subdirectory in the program output directory (defined in __main__) to drop files with a PowerPoint type file extension
 def get_ppt_output_path(ppt_path):
     return "powerpoints"
 
@@ -63,10 +63,11 @@ def get_excel_output_path(excel_path):
 #       str - Full path to a file
 # Outputs:
 #       0 - Return value when the input is a folder
-#       funct - Appropriate output path handler based on mapping in dictionary of file extensions
+#       function pointer - Appropriate output path handler based on mapping in dictionary of file extensions
 def get_file_type_handler(file_path):
 
-    if not os.path.isfile(file_path):
+    # Check if file_path is a directory
+    if os_is_path_a_dir(file_path):
         print(f"Log - \"{file_path}\" is a directory")
         return 0
 
@@ -98,16 +99,16 @@ def get_file_type_handler(file_path):
     }
 
     # Get extension of file_path
-    file_path_extension = os.path.splitext(file_path)[1].lower()
+    file_path_extension = os_get_file_ext(file_path)
     print(f"Log - Extension of \"{file_path}\" is \"{file_path_extension}\"")
 
     # Set the correct handler based on the dictionary above
     path_handler_function = function_map.get(file_path_extension)
 
     # If the extension exists in the dictionary, return the mapped function
-    if (path_handler_function):
+    if path_handler_function:
         return path_handler_function
 
-    # If the extension does not exist in the dictionary, return the "other" function
+    # If the extension DOES NOT exist in the dictionary, return the "other" function
     print(f"Log - \"{file_path}\" is a file type Other")
     return get_other_output_path
