@@ -35,11 +35,11 @@ def setup_console_handler(handler_formatter, debug_mode):
 # Inputs:
 #       logging.Formatter - Log format defined in setup_all_log_handlers function
 # Outputs:
-#       None
-# Define log file directory
+#       Boolean - False if the output directory for logging couldn't be created. True otherwise
 def setup_file_handler(handler_formatter):
     log_directory = "program_logs"
-    os_make_dir(log_directory)
+    if os_make_dir(log_directory):
+        return False
 
     # Define log file name for file handler
     log_file_name_local = datetime.datetime.now().strftime("app_log_%Y%m%d_%H%M%S.log")
@@ -52,7 +52,7 @@ def setup_file_handler(handler_formatter):
     file_handler.setFormatter(handler_formatter)
     logger.addHandler(file_handler)
 
-    return
+    return True
 
 
 # Setup all log handlers

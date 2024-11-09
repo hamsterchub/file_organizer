@@ -43,7 +43,7 @@ def os_make_dir(dir_path):
 #       None
 def os_move_file(full_file_path, dest_dir):
     shutil.move(full_file_path, dest_dir)
-    logger.debug(f"Moved: \"{full_file_path}\" to \"{dest_dir}\"\n")
+    logger.info(f"Moved: \"{full_file_path}\" to \"{dest_dir}\"\n")
     return
 
 

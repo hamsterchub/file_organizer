@@ -3,22 +3,25 @@ from datetime import datetime
 from PIL import Image
 from PIL. ExifTags import TAGS
 
+# Import project files
+from util_functions import os_join_path
+
 # Logger
 import logging
 logger = logging.getLogger(__name__)    # Logger
 
 
-# Debugging function to parse exif data and print to console if there's some pics being annoying
+# Debugging function to parse exif data and log in debug mode
 # Inputs:
 #       exif_data object - exif data of an image
 # Outputs:
 #       None
-def print_exif_data(exif_data):
-    print(f"\n####################################")
+def log_exif_data(exif_data):
+    logger.debug(f"\n####################################")
     for tag, value in exif_data.items():
         tag_name = TAGS.get(tag, tag)
-        print(f"\"{tag_name}\": \"{value}\"")
-    print(f"####################################\n")
+        logger.debug(f"\"{tag_name}\": \"{value}\"")
+    logger.debug(f"####################################\n")
     return
 
 
@@ -73,10 +76,10 @@ def get_image_exif_output(img_exif_data):
 # Inputs:
 #       str - Full path to an image file
 # Outputs:
-#       str - Desired subdirectory in the program output directory (defined in __main__) to drop files with an image type file extension
-#           ex. "images/2000-01-01"
+#       False - If there was an issue opening the file. Otherwise...
+#       str - Desired subdirectory to move image file to (ex. "images/2000-01-01")
 def get_image_output_path(image_path):
-    img_out_path = "images/"
+    img_out_path = "images"
     try:
         # Open the media to get its creation date
         img = Image.open(image_path)
@@ -84,19 +87,15 @@ def get_image_output_path(image_path):
 
         # Get the creation date from EXIF data if available
         if exif_data is not None:
-            print(f"Log - There is valid exif data on this image")
-
-            ##########################
-            print_exif_data(exif_data)
-            ##########################
-            
+            logger.debug(f"Valid exif data on this image: \"{image_path}\"")
+            log_exif_data(exif_data)
             return img_out_path + get_image_exif_output(exif_data)
 
         # This code will execute if EXIF data is NOT available
-        print(f"Log - There is NOT valid exif data on this image")
-        return img_out_path + "no_exif_data"
+        logger.debug(f"Invalid exif data on this image: \"{image_path}\"")
+        return os_join_path(img_out_path, "no_exif_data")
 
     # This code will execute if there was an issue opening the file
     except Exception as e:
-        print(f"Error - Error while opening \"{image_path}\": {e}")
-        return 1
+        logger.error(f"Error - Error while opening \"{image_path}\": {e}")
+        return False
