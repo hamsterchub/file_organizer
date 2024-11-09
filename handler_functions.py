@@ -3,6 +3,10 @@ from image_handler import get_image_output_path
 from util_functions import os_is_path_a_dir
 from util_functions import os_get_file_ext
 
+# Logger
+import logging
+logger = logging.getLogger(__name__)    # Logger
+
 
 # Inputs:
 #       str - Full path to a file

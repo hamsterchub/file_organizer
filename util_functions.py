@@ -1,5 +1,11 @@
+# Import Python libs
 import os
 import shutil
+
+# Logger
+import logging
+logger = logging.getLogger(__name__)
+
 
 # Print scoreboard
 # Inputs:
@@ -21,7 +27,7 @@ def print_scoreboard(files, dirs, errors):
 #
 def os_make_dir(dir_path):
     try:
-        os.makedirs(dir_path)
+        os.makedirs(dir_path, exist_ok=True)
         print(f"Action - Created new directory: \"{dir_path}\"")
     except OSError as e:
         print(f"Error - Couldn't create directory \"{dir_path}\": {e}")
@@ -47,7 +53,7 @@ def os_move_file(full_file_path, dest_dir):
 #       str - "local" file name
 # Outputs:
 #       str - joined path (ex. C:/Users/Bob/Input/image.jpg)
-def os_join_pathy(dir_path, file_name):
+def os_join_path(dir_path, file_name):
     return os.path.join(dir_path, file_name)
 
 

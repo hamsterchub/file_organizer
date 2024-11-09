@@ -1,8 +1,11 @@
+# Import Python libs
 from datetime import datetime
-
-# Used to get image metadata
 from PIL import Image
 from PIL. ExifTags import TAGS
+
+# Logger
+import logging
+logger = logging.getLogger(__name__)    # Logger
 
 
 # Debugging function to parse exif data and print to console if there's some pics being annoying

@@ -2,6 +2,10 @@
 import util_functions
 from handler_functions import get_file_type_handler
 
+# Logger
+import logging
+logger = logging.getLogger(__name__)
+
 
 # Main program logic
 # Inputs:
@@ -23,14 +27,12 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
         return [num_files_processed, num_folders_removed, num_errors]
     
     # Create the output directory if it doesn't exist
-    if not util_functions.os_does_dir_exist(output_dir):
-        print(f"Action - The output directory doesn't exist")
-        if not util_functions.os_make_dir(output_dir):
-            return [num_files_processed, num_folders_removed, num_errors]
+    if not util_functions.os_make_dir(output_dir):
+        return [num_files_processed, num_folders_removed, num_errors]
 
     # Loop through all files in the input directory
     for filename in util_functions.os_list_dir(input_dir):
-        file_path = util_functions.os_join_pathy(input_dir, filename)
+        file_path = util_functions.os_join_path(input_dir, filename)
         print(f"Log - Current file path being analyzed: \"{file_path}\"")
               
         # Get the correct handler function for the extension of the current path (or 0 if current path is a folder)
@@ -100,8 +102,8 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
 if __name__ == "__main__":
 
     # Set input and output directories
-    input_dir_main = "E:\Development\Python\Input"
-    output_dir_main = "E:\Development\Python\Output"
+    input_dir_main = "E:\Development\Python\File Organizer\Input"
+    output_dir_main = "E:\Development\Python\File Organizer\Output"
     print(f"Log - Input directory: \"{input_dir_main}\"\nLog - Output directory: \"{output_dir_main}\"")
 
     print(f"Log - Entering main\n")
