@@ -25,10 +25,6 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
     if not util_functions.os_does_dir_exist(input_dir):
         print(f"Error - The input directory doesn't exist! Either the input_dir in the __main__ function is wrong or a folder deletion caused an issue. Exiting main")
         return [num_files_processed, num_folders_removed, num_errors]
-    
-    # Create the output directory if it doesn't exist
-    if not util_functions.os_make_dir(output_dir):
-        return [num_files_processed, num_folders_removed, num_errors]
 
     # Loop through all files in the input directory
     for filename in util_functions.os_list_dir(input_dir):
@@ -60,19 +56,19 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
         print(f"Log - No error caught from handler function during processing of \"{file_path}\"")
         
         # Get full output directory and create if it doesn't exist
-        create_out_dir_return = util_functions.os_create_output_dir(output_dir, partial_output_path)
-        if create_out_dir_return == 0:    # There was an error in creating the output directory
+        full_output_path = util_functions.os_join_path(output_dir, partial_output_path)
+        if not util_functions.os_make_dir(full_output_path):    # There was an error in creating the output directory
             num_errors += 1
             continue
 
         # Check to see if the current file already exists in the appropriate destination folder and attempt to delete it
-        bool_find_dupes_out = util_functions.deduplicate_output(create_out_dir_return, filename)
+        bool_find_dupes_out = util_functions.deduplicate_output(full_output_path, filename)
         if not bool_find_dupes_out: # File was not successfully deleted
             num_errors += 1
             continue
         
         # Move the file to the full output path subdirectory and increment successful procs by 1
-        util_functions.os_move_file(file_path, create_out_dir_return)
+        util_functions.os_move_file(file_path, full_output_path)
         num_files_processed += 1
 
     # Checks for empty input directory. Delete the input_dir unless is_recursive is set to FALSE
@@ -109,4 +105,4 @@ if __name__ == "__main__":
     print(f"Log - Entering main\n")
     main_out = run_main(input_dir_main, output_dir_main)
     print(f"Log - Program complete!")
-    util_functions.print_scoreboard(main_out[0], main_out[1], main_out[2])
+    util_functions.log_scoreboard(main_out[0], main_out[1], main_out[2])

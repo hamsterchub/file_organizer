@@ -7,16 +7,16 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-# Print scoreboard
+# Print scoreboard to logs
 # Inputs:
 #       All integers
 # Outputs:
 #       None
-def print_scoreboard(files, dirs, errors):
-    print(f"\nSCOREBOARD:")
-    print(f"Number of files processed = \"{files}\"")
-    print(f"Number of directories processed = \"{dirs}\"")
-    print(f"Number of errors seen = \"{errors}\"")
+def log_scoreboard(files, dirs, errors):
+    logger.debug(f"\nSCOREBOARD:")
+    logger.debug(f"Number of files processed = \"{files}\"")
+    logger.debug(f"Number of directories processed = \"{dirs}\"")
+    logger.debug(f"Number of errors seen = \"{errors}\"")
     return
 
 
@@ -24,13 +24,13 @@ def print_scoreboard(files, dirs, errors):
 # Inputs:
 #       str - Path to desired directory
 # Outputs:
-#
+#       Bool - If creation failed
 def os_make_dir(dir_path):
     try:
         os.makedirs(dir_path, exist_ok=True)
-        print(f"Action - Created new directory: \"{dir_path}\"")
+        logger.debug(f"Created directory: \"{dir_path}\"")
     except OSError as e:
-        print(f"Error - Couldn't create directory \"{dir_path}\": {e}")
+        logger.error(f"Couldn't create directory \"{dir_path}\": {e}")
         return False
     return True
 
@@ -43,7 +43,7 @@ def os_make_dir(dir_path):
 #       None
 def os_move_file(full_file_path, dest_dir):
     shutil.move(full_file_path, dest_dir)
-    print(f"Action - Moved: \"{full_file_path}\" to \"{dest_dir}\"\n")
+    logger.debug(f"Moved: \"{full_file_path}\" to \"{dest_dir}\"\n")
     return
 
 
@@ -100,9 +100,9 @@ def os_is_path_a_dir(file_path):
 #       Boolean
 def os_is_dir_empty(dir_path):
     if not os.listdir(dir_path):
-        print(f"Log - \"{dir_path}\" is empty")
+        logger.debug(f"Directory is empty: \"{dir_path}\"")
         return True
-    print(f"Log - \"{dir_path}\" is NOT empty")
+    logger.debug(f"Directory is NOT empty: \"{dir_path}\"")
     return False
 
 
@@ -112,13 +112,13 @@ def os_is_dir_empty(dir_path):
 # Outputs:
 #       bool - True if directory was deleted successfully. False otherwise
 def os_remove_empty_dir(dir_path):
-    print(f"Log - \"{dir_path}\" is an empty folder that needs to be cleaned up. Attempting to delete folder...")
+    logger.debug(f"Directory is empty and needs to be cleaned up: \"{dir_path}\"")
 
     try:
         os.rmdir(dir_path)
-        print(f"Action - Removed empty directory: \"{dir_path}\"")
+        logger.info(f"Removed empty directory: \"{dir_path}\"")
     except OSError as e:
-        print(f"Error - Couldn't delete directory \"{dir_path}\": {e}")
+        logger.error(f"Error - Couldn't delete directory \"{dir_path}\": {e}")
         return False
     return True
 
@@ -132,35 +132,11 @@ def os_remove_empty_dir(dir_path):
 def deduplicate_output(full_output_path, filename):
     dest_file_path = os.path.join(full_output_path, filename)
     if os.path.exists(dest_file_path):
-        print(f"Log - This file already exists in the correct output directory. Attempting to delete the duplicate...")
+        logger.debug(f"This file already exists in the correct output directory: \"{dest_file_path}\"")
         try:
             os.remove(dest_file_path)
-            print(f"Action - Deleted duplicate of \"{dest_file_path}\"")
+            logger.info(f"Action - Deleted duplicate of \"{dest_file_path}\"")
         except OSError as e:
-            print(f"Error - Couldn't delete the duplicate file \"{dest_file_path}\": {e}")
+            logger.error(f"Error - Couldn't delete the duplicate file \"{dest_file_path}\": {e}")
             return False
     return True
-
-
-# Create desired output directory if it doesn't exist yet
-# Inputs:
-#       str - Output directory from __main__ invocation
-#       str - Derived output directory from handler function
-# Outputs:
-#       0 - Error with creating desired output directory
-#       str - Full output directory
-def os_create_output_dir(output_dir, partial_output_path):
-    # Set full output path
-    full_output_path = os.path.join(output_dir, partial_output_path)
-    print(f"Log - Output directory is \"{full_output_path}\"")
-    
-    # Create the full output path subdirectory if it doesn't exist
-    if not os.path.exists(full_output_path):
-        print(f"Log - Directory \"{full_output_path}\" doesn't exist. Attempt to create this directory...")
-        try:
-            os.makedirs(full_output_path)
-            print(f"Action - Created directory \"{full_output_path}\"")
-        except OSError as e:
-            print(f"Error - Couldn't create the new directory \"{full_output_path}\": {e}")
-            return 0
-    return full_output_path
