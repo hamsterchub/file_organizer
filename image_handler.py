@@ -32,7 +32,7 @@ def log_exif_data(exif_data):
 #       <date obj> - The chosen date object for organizing the image
 def choose_exif_date(dates):
     chosen_date = min(dates)
-    print(f"Chosen exif date for current file is \"{chosen_date}\"")
+    logger.debug(f"Chosen exif date for current file is \"{chosen_date}\"")
     return chosen_date
 
 
@@ -53,22 +53,22 @@ def get_image_exif_output(img_exif_data):
     if date_original:
         bool_is_date_orig_or_mod = True
         date_orig_extract = datetime.strptime(date_original, "%Y:%m:%d %H:%M:%S")
-        print(f"Log - There is a DateTimeOriginal tag on this file: \"{date_orig_extract}\"")
+        logger.debug(f"DateTimeOriginal tag on this file: \"{date_orig_extract}\"")
     else:
-        print(f"Log - There is NOT a DateTimeOriginal tag on this file")
+        logger.debug(f"There is NOT a DateTimeOriginal tag on this file: \"{date_orig_extract}\"")
         
     if date_modified:
         bool_is_date_orig_or_mod = True
         date_mod_extract = datetime.strptime(date_modified, "%Y:%m:%d %H:%M:%S")
-        print(f"Log - There is a Modified Date tag on this file: \"{date_mod_extract}\"")
+        logger.debug(f"Modified Date tag on this file: \"{date_mod_extract}\"")
     else:
-        print(f"Log - There is NOT a Modified Date tag on this file")
+        logger.debug(f"There is NOT a Modified Date tag on this file: \"{date_mod_extract}\"")
 
     if bool_is_date_orig_or_mod:
         # Return the appropriate date in yyyy-mm-dd format based on the logic of the choose_exif_date function
         return choose_exif_date([date_orig_extract, date_mod_extract]).strftime("%Y-%m-%d")
 
-    print(f"Log - There is NOT a DateTimeOriginal nor a DateModified tag on this file")
+    logger.debug(f"There is NOT a DateTimeOriginal nor a DateModified tag on this file")
     return "no_date_time_tags"
 
 
@@ -97,5 +97,5 @@ def get_image_output_path(image_path):
 
     # This code will execute if there was an issue opening the file
     except Exception as e:
-        logger.error(f"Error - Error while opening \"{image_path}\": {e}")
+        logger.error(f"Error while opening \"{image_path}\": {e}")
         return False
