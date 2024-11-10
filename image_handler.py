@@ -89,7 +89,7 @@ def get_image_output_path(image_path):
         if exif_data is not None:
             logger.debug(f"Valid exif data on this image: \"{image_path}\"")
             log_exif_data(exif_data)
-            return img_out_path + get_image_exif_output(exif_data)
+            return os_join_path(img_out_path, get_image_exif_output(exif_data))
 
         # This code will execute if EXIF data is NOT available
         logger.debug(f"Invalid exif data on this image: \"{image_path}\"")
