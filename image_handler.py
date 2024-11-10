@@ -7,8 +7,8 @@ from PIL. ExifTags import TAGS
 from util_functions import os_join_path
 
 # Logger
-import logging
-logger = logging.getLogger(__name__)    # Logger
+from app_logger import setup_logger
+logger = setup_logger()
 
 
 # Debugging function to parse exif data and log in debug mode

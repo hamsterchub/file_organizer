@@ -2,9 +2,11 @@
 import os
 import shutil
 
-# Logger
-import logging
-logger = logging.getLogger(__name__)
+# Wrapper around Logger setup to avoid circular import with app_logger.py
+logger = None
+def setup_util_functions_logger(logger_obj):
+    global logger
+    logger = logger_obj
 
 
 # Print scoreboard to logs
@@ -28,7 +30,14 @@ def log_scoreboard(files, dirs, errors):
 def os_make_dir(dir_path):
     try:
         os.makedirs(dir_path, exist_ok=True)
-        logger.debug(f"Created directory: \"{dir_path}\"")
+
+        # Avoids issues with linker due to circular imports with app_logger
+        # Allows for the function to be valid before logger is setup
+        if logger:
+            logger.debug(f"Created directory: \"{dir_path}\"")
+        else:
+            print(f"Logger not setup yet. Only expected during linker execution")
+
     except OSError as e:
         logger.error(f"Couldn't create directory \"{dir_path}\": {e}")
         return False
@@ -47,14 +56,13 @@ def os_move_file(full_file_path, dest_dir):
     return
 
 
-# Return full path of a directory and a file within it
 # Inputs:
-#       str - Directory path
-#       str - "local" file name
+#       str - First thing to join
+#       str - Second thing to join
 # Outputs:
-#       str - joined path (ex. C:/Users/Bob/Input/image.jpg)
-def os_join_path(dir_path, file_name):
-    return os.path.join(dir_path, file_name)
+#       str - joined path
+def os_join_path(join1, join2):
+    return os.path.join(join1, join2)
 
 
 # Return array of file/dir paths in a directory

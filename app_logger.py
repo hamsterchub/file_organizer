@@ -1,11 +1,11 @@
 # Import Python libs
 import datetime
+import logging
 
 # Import project files
 from util_functions import os_make_dir, os_join_path
 
-# Logger
-import logging
+# Set Logger instance
 logger = logging.getLogger(__name__)
 
 
@@ -59,11 +59,11 @@ def setup_file_handler(handler_formatter):
 # Inputs:
 #       Boolean - True if program was invoked with --debug option. False otherwise
 # Outputs:
-#       None
-def setup_all_log_handlers(debug_mode = False):
-    logger.setLevel(logging.DEBUG)
-    handler_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    setup_console_handler(handler_formatter, debug_mode)    # Setup console logger
-    setup_file_handler(handler_formatter)                   # Setup file logger
-
-    return
+#       Logger object
+def setup_logger(debug_mode = False):
+    if not logger.hasHandlers():    # Only setup the logger once
+        logger.setLevel(logging.DEBUG)
+        handler_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        setup_console_handler(handler_formatter, debug_mode)    # Setup console logger
+        setup_file_handler(handler_formatter)                   # Setup file logger
+    return logger

@@ -4,8 +4,8 @@ from util_functions import os_is_path_a_dir
 from util_functions import os_get_file_ext
 
 # Logger
-import logging
-logger = logging.getLogger(__name__)    # Logger
+from app_logger import setup_logger
+logger = setup_logger()
 
 
 # Inputs:

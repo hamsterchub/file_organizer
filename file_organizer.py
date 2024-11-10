@@ -3,9 +3,10 @@ import util_functions
 from handler_functions import get_file_type_handler
 
 # Logger
-import logging
-from app_logger import setup_all_log_handlers
-logger = logging.getLogger(__name__)
+#    One-time setup of logger in util_functions to avoid circular imports
+from app_logger import setup_logger
+logger = setup_logger()
+util_functions.setup_util_functions_logger(logger)
 
 
 # Main program logic
@@ -98,14 +99,10 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
 
 # Function to be called upon program invocation
 if __name__ == "__main__":
-
-    # Setup logger with Debug = True
-    setup_all_log_handlers(True)
-
     # Set input and output directories
     input_dir_main = "E:\Development\Python\File Organizer\Input"
-    output_dir_main = "E:\Development\Python\File Organizer\Output"
     logger.info(f"Input directory: \"{input_dir_main}\"")
+    output_dir_main = "E:\Development\Python\File Organizer\Output"
     logger.info(f"Output directory: \"{output_dir_main}\"")
 
     logger.debug(f"Log - Entering main\n")
