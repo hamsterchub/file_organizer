@@ -31,7 +31,7 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
     # Loop through all files in the input directory
     for filename in util_functions.os_list_dir(input_dir):
         file_path = util_functions.os_join_path(input_dir, filename)
-        logger.info(f"\nCurrent file path being analyzed: \"{file_path}\"")
+        logger.info(f"Current file path being analyzed: \"{file_path}\"")
 
         # Templatized log output for any errors while processing this file
         warning_logger_output = f"Error caught. Will not process this file: \"{file_path}\""

@@ -17,11 +17,11 @@ logger = setup_logger()
 # Outputs:
 #       None
 def log_exif_data(exif_data):
-    logger.debug(f"\n####################################")
+    logger.debug(f"####################################")
     for tag, value in exif_data.items():
         tag_name = TAGS.get(tag, tag)
         logger.debug(f"\"{tag_name}\": \"{value}\"")
-    logger.debug(f"####################################\n")
+    logger.debug(f"####################################")
     return
 
 

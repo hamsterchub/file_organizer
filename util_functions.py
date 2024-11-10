@@ -15,7 +15,7 @@ def setup_util_functions_logger(logger_obj):
 # Outputs:
 #       None
 def log_scoreboard(files, dirs, errors):
-    logger.debug(f"\nSCOREBOARD:")
+    logger.debug(f"SCOREBOARD:")
     logger.debug(f"Number of files processed = \"{files}\"")
     logger.debug(f"Number of directories processed = \"{dirs}\"")
     logger.debug(f"Number of errors seen = \"{errors}\"")
