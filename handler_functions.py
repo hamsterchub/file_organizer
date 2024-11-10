@@ -3,6 +3,10 @@ from image_handler import get_image_output_path
 from util_functions import os_is_path_a_dir
 from util_functions import os_get_file_ext
 
+# Logger
+from app_logger import setup_logger
+logger = setup_logger()
+
 
 # Inputs:
 #       str - Full path to a file
@@ -68,7 +72,7 @@ def get_file_type_handler(file_path):
 
     # Check if file_path is a directory
     if os_is_path_a_dir(file_path):
-        print(f"Log - \"{file_path}\" is a directory")
+        logger.debug(f"Current file_path is a directory: \"{file_path}\"")
         return 0
 
     # Setup dictionary for supported extensions and their respective handler functions
@@ -100,15 +104,15 @@ def get_file_type_handler(file_path):
 
     # Get extension of file_path
     file_path_extension = os_get_file_ext(file_path)
-    print(f"Log - Extension of \"{file_path}\" is \"{file_path_extension}\"")
+    logger.debug(f"Extension \"{file_path_extension}\" found for current file: \"{file_path}\"")
 
     # Set the correct handler based on the dictionary above
     path_handler_function = function_map.get(file_path_extension)
 
-    # If the extension exists in the dictionary, return the mapped function
+    # If the extension is defined in the dictionary, return the mapped function
     if path_handler_function:
         return path_handler_function
 
     # If the extension DOES NOT exist in the dictionary, return the "other" function
-    print(f"Log - \"{file_path}\" is a file type Other")
+    logger.debug(f"Log - \"{file_path}\" is a file type Other")
     return get_other_output_path
