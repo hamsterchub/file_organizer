@@ -49,7 +49,7 @@ def run_main(input_dir, output_dir, is_recursive = False, num_files_processed = 
         
         # Get the "local" output path to be appended to output_dir, and handle error if needed
         local_output_path = file_type_handler(file_path)
-        if local_output_path:   # There was an issue opening an image file
+        if not local_output_path:   # There was an issue opening an image file
             logger.warning(warning_logger_output)
             num_errors += 1
             continue
