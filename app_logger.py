@@ -38,7 +38,7 @@ def setup_console_handler(handler_formatter, debug_mode):
 #       Boolean - False if the output directory for logging couldn't be created. True otherwise
 def setup_file_handler(handler_formatter):
     log_directory = "program_logs"
-    if os_make_dir(log_directory):
+    if not os_make_dir(log_directory):
         return False
 
     # Define log file name for file handler

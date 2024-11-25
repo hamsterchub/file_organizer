@@ -32,7 +32,7 @@ def os_make_dir(dir_path):
         os.makedirs(dir_path, exist_ok=True)
 
         # Avoids issues with linker due to circular imports with app_logger
-        # Allows for the function to be valid before logger is setup
+        # Allows for the logger.debug statement to be valid before logger is set up
         if logger:
             logger.debug(f"Created directory: \"{dir_path}\"")
         else:
