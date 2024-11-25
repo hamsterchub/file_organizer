@@ -14,3 +14,10 @@ Required setup:
 1. Install python
 2. python -m pip install --upgrade pip
 3. python -m pip install Pillow
+
+Program Files:
+1. app_logger.py - Logging solution
+2. util_functions.py - OS calls, Debug printer, Duplicte file handler
+3. handler_functions.py - Determine file type and invoke correct file processor, non-image file processors
+3. image_handler.py - Called by handler_functions.py for files with "image" type extensions (defined in handler_functions)
+3. file_organizer.py - Main invocation, folder definitions/setup, loop through directory for processing images (recursively as needed)
