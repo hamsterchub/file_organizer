@@ -1,6 +1,7 @@
 # Import Python libs
 import datetime
 import logging
+from logging.handlers import RotatingFileHandler
 
 # Import project files
 from util_functions import os_make_dir, os_join_path
@@ -46,8 +47,9 @@ def setup_file_handler(handler_formatter):
     log_file_name_with_dir = os_join_path(log_directory, log_file_name_local)
     logger.info("Log file name for this run: %s", log_file_name_with_dir)
 
-    # Setup file handler (INFO and above)
-    file_handler = logging.FileHandler(log_file_name_with_dir)
+    # Setup file handler - INFO level ; formatter defined above ; 5MB rolling, 3 backups per run)
+    file_handler = RotatingFileHandler(
+        log_file_name_with_dir, maxBytes = 5 * 1024 * 1024, backupCount = 3)
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(handler_formatter)
     logger.addHandler(file_handler)
